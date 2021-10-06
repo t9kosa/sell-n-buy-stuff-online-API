@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+
 app.use(bodyParser.json());
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -14,11 +14,19 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const secrets = require('./secrets.json');
 
+var cloudinary = require('cloudinary');
+var cloudinaryStorage = require('multer-storage-cloudinary');
+const upload = multer({ dest: 'uploads/' })
 
+var parser = multer({ storage: storage })
+var storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'sell-n-buy-used-stuff',
+  allowedFormats: ['jpg', 'png'],
+});
 
 // You can store key-value pairs in express, here we store the port setting
 app.set('port', (process.env.PORT || 80));
-
 
 //******* SECURITY *******//
 
@@ -169,24 +177,6 @@ app.post('/users/:username/posts',passport.authenticate('basic', { session: fals
     }
 })
 
-//upload images to specific post using postId, HTTP BASIC 
-app.post('/users/:username/posts/:postId/uploadimages', passport.authenticate('basic', { session: false }), upload.array('images', 4), function (req, res, next) {
-  const user = users.find(u => u.username === req.params.username)
-  if (user === undefined) {
-    res.sendStatus(404);
-  } else {  
-   const post = posts.find(p => p.postId === req.params.postId)
-   if (post === undefined) {
-    res.sendStatus(404);
-   } else {
-    post.images = [{ images: req.body, images: req.files }];
-    console.log(req.body);
-    console.log(req.files);
-    res.sendStatus(200);
-   }
-  }
-})
-
 // Modify a post, HTTP BASIC
 app.patch('/users/:username/posts/:postId', passport.authenticate('basic', { session: false }), (req, res) => {
   const user = users.find(u => u.username === req.params.username)
@@ -209,6 +199,63 @@ app.patch('/users/:username/posts/:postId', passport.authenticate('basic', { ses
   }
 })
 
+app.post('/users/:username/posts/:postId/uploadimages', passport.authenticate('basic', { session: false }), parser.array('images', 4), function (req, res, next) {
+ const user = users.find(u => u.username === req.params.username)
+  if (user === undefined) {
+    res.sendStatus(404);
+  } else { 
+  const post = posts.find(p => p.postId === req.params.postId)
+   if (post === undefined) {
+     res.sendStatus(404);
+   } else {
+     post.images = [{ images: req.body, images: req.files }];
+     console.log(req.body);
+     console.log(req.files);
+     res.sendStatus(202);
+   }
+  }
+ });
+
+//change new images to specific post using postId, HTTP BASIC 
+app.put('/users/:username/posts/:postId/uploadimages', passport.authenticate('basic', { session: false }), parser.array('images', 4), function (req, res, next) {
+  const user = users.find(u => u.username === req.params.username)
+  if (user === undefined) {
+    res.sendStatus(404);
+  } else { 
+  const post = posts.find(p => p.postId === req.params.postId)
+   if (post === undefined) {
+     res.sendStatus(404);
+   } else {
+     post.images = [{ images: req.body, images: req.files }];
+     console.log(req.body);
+     console.log(req.files);
+     res.sendStatus(202);
+   }
+  }
+ })
+
+
+/*
+//upload images to specific post using postId, HTTP BASIC 
+app.post('/users/:username/posts/:postId/uploadimages', passport.authenticate('basic', { session: false }), upload.array('images', 4), function (req, res, next) {
+  const user = users.find(u => u.username === req.params.username)
+  if (user === undefined) {
+    res.sendStatus(404);
+  } else {  
+   const post = posts.find(p => p.postId === req.params.postId)
+   if (post === undefined) {
+    res.sendStatus(404);
+   } else {
+    post.images = [{ images: req.body, images: req.files }];
+    console.log(req.body);
+    console.log(req.files);
+    res.sendStatus(200);
+   }
+  }
+})
+*/
+
+/*
 //change new images to specific post using postId, HTTP BASIC 
 app.put('/users/:username/posts/:postId/uploadimages', passport.authenticate('basic', { session: false }), upload.array('images', 4), function (req, res, next) {
   const user = users.find(u => u.username === req.params.username)
@@ -226,7 +273,7 @@ app.put('/users/:username/posts/:postId/uploadimages', passport.authenticate('ba
    }
   }
  })
- 
+*/ 
 
 // Delete a post, HTTP BASIC
 app.delete('/users/:username/posts/:postId', (req, res) => {
@@ -273,6 +320,12 @@ app.get('/posts/search/', (req, res) => {
   console.log(req.query);
 })
 
+// start listening for incoming HTTP connections
+app.listen(app.get('port'), function() {
+    console.log('Node app is running on port', app.get('port'));
+});
+/*
 app.listen(port, () => {
     console.log(`listening at http://localhost:${port}`)
 })
+*/
