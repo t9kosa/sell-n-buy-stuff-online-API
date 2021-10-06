@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+//const upload = multer({ dest: 'uploads/' })
 app.use(bodyParser.json());
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -17,8 +17,8 @@ const secrets = require('./secrets.json');
 // You can store key-value pairs in express, here we store the port setting
 app.set('port', (process.env.PORT || 80));
 
-const cloudinary = require('cloudinary');
-const cloudinaryStorage = require('multer-storage-cloudinary');
+var cloudinary = require('cloudinary');
+var cloudinaryStorage = require('multer-storage-cloudinary');
 const parser = multer({ storage: storage });
 
 
