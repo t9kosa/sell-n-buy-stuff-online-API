@@ -17,6 +17,22 @@ const secrets = require('./secrets.json');
 // You can store key-value pairs in express, here we store the port setting
 app.set('port', (process.env.PORT || 80));
 
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
+const parser = multer({ storage: storage });
+
+
+const storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: '', 
+  allowedFormats: ['jpg', 'png'],
+});
+
+app.post('/upload', parser.single('image'), function (req, res) {
+    console.log(req.file);
+    res.status(201);
+    res.json(req.file);
+});
 
 app.get('/', (req, res) => {
     res.send('SellnBuy buy stuff');
