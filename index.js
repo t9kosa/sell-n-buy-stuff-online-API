@@ -14,6 +14,22 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const secrets = require('./secrets.json');
 
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
+var parser = multer({ storage: storage });
+
+
+var storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: '', 
+  allowedFormats: ['jpg', 'png'],
+});
+
+app.post('/upload', parser.single('image'), function (req, res) {
+    console.log(req.file);
+    res.status(201);
+    res.json(req.file);
+});
 
 
 // You can store key-value pairs in express, here we store the port setting
