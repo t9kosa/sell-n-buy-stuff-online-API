@@ -28,6 +28,12 @@ var storage = cloudinaryStorage({
 // You can store key-value pairs in express, here we store the port setting
 app.set('port', (process.env.PORT || 80));
 
+app.get('/', (req, res) => {
+    res.send('SellnBuy buy stuff');
+    
+    res.sendStatus(200);
+})
+
 //******* SECURITY *******//
 
 //http basic
