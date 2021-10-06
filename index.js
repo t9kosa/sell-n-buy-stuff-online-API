@@ -16,7 +16,7 @@ const secrets = require('./secrets.json');
 
 var cloudinary = require('cloudinary');
 var cloudinaryStorage = require('multer-storage-cloudinary');
-const upload = multer({ dest: 'uploads/' })
+// const upload = multer({ dest: 'uploads/' })
 
 var parser = multer({ storage: storage })
 var storage = cloudinaryStorage({
