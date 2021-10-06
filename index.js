@@ -16,10 +16,10 @@ const secrets = require('./secrets.json');
 
 const cloudinary = require('cloudinary');
 const cloudinaryStorage = require('multer-storage-cloudinary');
-var parser = multer({ storage: storage });
+const parser = multer({ storage: storage });
 
 
-var storage = cloudinaryStorage({
+const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: '', 
   allowedFormats: ['jpg', 'png'],
