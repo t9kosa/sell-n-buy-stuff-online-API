@@ -20,6 +20,12 @@ const secrets = require('./secrets.json');
 app.set('port', (process.env.PORT || 80));
 
 
+app.get('/', (req, res) => {
+    res.send('SellnBuy buy stuff');
+    
+    res.sendStatus(200);
+})
+
 //******* SECURITY *******//
 
 //http basic
