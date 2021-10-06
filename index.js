@@ -14,6 +14,12 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const secrets = require('./secrets.json');
 
+
+
+// You can store key-value pairs in express, here we store the port setting
+app.set('port', (process.env.PORT || 80));
+
+
 //******* SECURITY *******//
 
 //http basic
