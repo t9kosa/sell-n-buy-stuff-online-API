@@ -1,27 +1,51 @@
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
-app.use(bodyParser.json());
-const bcrypt = require('bcrypt');
-const passport = require('passport');
-const BasicStrategy = require('passport-http').BasicStrategy;
-const jwt = require('jsonwebtoken');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const secrets = require('./secrets.json');
+const bcrypt = require('bcrypt')
+const passport = require('passport')
+const BasicStrategy = require('passport-http').BasicStrategy
+const jwt = require('jsonwebtoken')
+const JwtStrategy = require('passport-jwt').Strategy
+const ExtractJwt = require('passport-jwt').ExtractJwt
+const secrets = require('./secrets.json')
+const Ajv = require('ajv')
+const ajv = new Ajv()
 
-// You can store key-value pairs in express, here we store the port setting
-app.set('port', (process.env.PORT || 80));
+app.use(bodyParser.json())
+
+const postSchema = require('./schemas/post.schema.json')
+const postValidator = ajv.compile(postSchema);
+
+const postValidateM = function (req, res, next) {
+  const validationResults = postValidator(req.body);
+  if(validationResults == true) {
+    next();
+  } else {
+    res.sendStatus(400);
+  }
+}
+
+
+const userSchema = require('./schemas/user.schema.json')
+const userValidator = ajv.compile(userSchema);
+
+const userValidateM = function (req, res, next) {
+  const validationResults = userValidator(req.body);
+  if(validationResults == true) {
+    next();
+  } else {
+    res.sendStatus(400);
+  }
+}
 
 /*
 var cloudinary = require('cloudinary');
 var cloudinaryStorage = require('multer-storage-cloudinary');
 const parser = multer({ storage: storage });
-
 
 const storage = cloudinaryStorage({
   cloudinary: cloudinary,
@@ -36,8 +60,10 @@ app.post('/upload', parser.single('image'), function (req, res) {
 });
 */
 
+app.set('port', (process.env.PORT || 80));
+
 app.get('/', (req, res) => {
-    res.send('SellnBuy buy stuff');
+    res.send('Welcome to SellnBuy buy stuff');
     
     res.sendStatus(200);
 })
@@ -100,7 +126,7 @@ app.get('/users', (req, res) => {
 let users = [];
 
 // Create a new user 
-app.post('/users', (req, res) => {
+app.post('/users',userValidateM, (req, res) => {
   let date = new Date();
   const salt = bcrypt.genSaltSync(6);
   const hashedPassword = bcrypt.hashSync(req.body.password, salt);
@@ -128,7 +154,7 @@ app.get('/users/:userId', passport.authenticate('basic', { session: false }), (r
 })
 
 // Update the information of an existing user, HTTP BASIC
-app.patch('/users/:userId', passport.authenticate('basic', { session: false }), (req, res) => {
+app.patch('/users/:userId', passport.authenticate('basic', { session: false }), userValidateM, (req, res) => {
     const user = users.find(u => u.userId === req.params.userId)
     if (user === undefined) {
       res.sendStatus(404);
@@ -164,15 +190,15 @@ app.delete('/users/:userId',passport.authenticate('basic', { session: false }), 
 
 let posts = [];
 
+
 // Create a new post, HTTP BASIC 
-app.post('/users/:username/posts',passport.authenticate('basic', { session: false }), (req, res) => {
+app.post('/users/:username/posts',passport.authenticate('basic', { session: false }), postValidateM, (req, res) => {
   const user = users.find(u => u.username === req.params.username)
   if (user === undefined) {
     res.sendStatus(404);
   } else {
     let date = new Date();
     console.log(req.body);
-
     posts.push({ 
 
       postId: uuidv4(),
@@ -188,7 +214,7 @@ app.post('/users/:username/posts',passport.authenticate('basic', { session: fals
       dateOfPosting: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() }),
       
     res.sendStatus(201);
-    }
+  }
 })
 
 //upload images to specific post using postId, HTTP BASIC 
@@ -210,7 +236,7 @@ app.post('/users/:username/posts/:postId/uploadimages', passport.authenticate('b
 })
 
 // Modify a post, HTTP BASIC
-app.patch('/users/:username/posts/:postId', passport.authenticate('basic', { session: false }), (req, res) => {
+app.patch('/users/:username/posts/:postId', passport.authenticate('basic', { session: false }), postValidateM, (req, res) => {
   const user = users.find(u => u.username === req.params.username)
   if (user === undefined) {
     res.sendStatus(404);
@@ -304,3 +330,4 @@ app.listen(port, () => {
     console.log(`listening at http://localhost:${port}`)
 })
 */
+
