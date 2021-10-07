@@ -46,13 +46,11 @@ const userValidateM = function (req, res, next) {
 var cloudinary = require('cloudinary');
 var cloudinaryStorage = require('multer-storage-cloudinary');
 const parser = multer({ storage: storage });
-
 const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: '', 
   allowedFormats: ['jpg', 'png'],
 });
-
 app.post('/upload', parser.single('image'), function (req, res) {
     console.log(req.file);
     res.status(201);
@@ -321,13 +319,38 @@ app.get('/posts/search/', (req, res) => {
   console.log(req.query);
 })
 
-// start listening for incoming HTTP connections
-app.listen(app.get('port'), function() {
-    console.log('Node app is running on port', app.get('port'));
-});
-/*
-app.listen(port, () => {
-    console.log(`listening at http://localhost:${port}`)
-})
-*/
+// TO ACTIVATE HEROKU 
+let serverInstance = null;
 
+module.exports = {
+  start: function() {
+    serverInstance = app.listen(app.get('port'), function() {
+      console.log('Node app is running on port', app.get('port'));
+    })
+  },
+  close: function() {
+    serverInstance.close();
+  }
+}
+
+
+app.use(function (err, req, res, next) {
+  console.log(err);
+  console.log('---');
+  console.error(err.stack)
+  res.status(500).send({ errorMessage: err.message });
+})
+
+/*LOCALHOST 3000 FOR MOCHA TESTING/
+let serverInstance = null;
+
+module.exports = {
+  start: function() {
+    serverInstance = app.listen(port, () => {
+      console.log(`Example app listening at http://localhost:${port}`)
+    })
+  },
+  close: function() {
+    serverInstance.close();
+  }
+}*/
