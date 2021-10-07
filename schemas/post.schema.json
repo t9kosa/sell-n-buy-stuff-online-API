@@ -1,0 +1,145 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "Post Schema",
+    "description": "used for making/updating posts",
+    "default": {},
+    "examples": [
+        {
+            "postId": "42e6f5e5-2b72-43ef-985f-50761f8526dc",
+            "title": "Nike airMax90, like new",
+            "description": "All White, size 40",
+            "category": "shoes",
+            "askingPrice": 20,
+            "location": "Oulu, 90100",
+            "deliverytype": "pickup",
+            "firstName": "matti",
+            "lastName": "meikalainen",
+            "email": "matti.meikalainen@gmail.com",
+            "dateOfPosting": "2021-9-6"
+        }
+    ],
+    "required": [
+        "title",
+        "description",
+        "category",
+        "askingPrice",
+        "location",
+        "deliverytype"
+    ],
+    "properties": {
+        "postId": {
+            "$id": "#/properties/postId",
+            "type": "string",
+            "title": "Describes post Id property",
+            "description": "PostId is a unique string to identify a post",
+            "default": "",
+            "examples": [
+                "42e6f5e5-2b72-43ef-985f-50761f8526dc"
+            ]
+        },
+        "title": {
+            "$id": "#/properties/title",
+            "type": "string",
+            "title": "Describes title property",
+            "description": "A short sentence of what item is referd to in the post.",
+            "default": "",
+            "examples": [
+                "Nike airMax90"
+            ]
+        },
+        "description": {
+            "$id": "#/properties/description",
+            "type": "string",
+            "title": "Describes description property",
+            "description": "A string to describe more about the item of the post.",
+            "default": "",
+            "examples": [
+                "All White, size 40"
+            ]
+        },
+        "category": {
+            "$id": "#/properties/category",
+            "type": "string",
+            "title": "Describes category property",
+            "description": "A category the sold item is preferd to",
+            "default": "",
+            "examples": [
+                "shoes"
+            ]
+        },
+        "askingPrice": {
+            "$id": "#/properties/askingPrice",
+            "type": "number",
+            "title": "Describes the asking price property",
+            "description": "To tell how much the item are intent to be pursed for.",
+            "default": 0,
+            "examples": [
+                10
+            ]
+        },
+        "location": {
+            "$id": "#/properties/location",
+            "type": "string",
+            "title": "Describes location property",
+            "description": "To tell where the sold item is located.",
+            "default": "",
+            "examples": [
+                "Oulu, 90100"
+            ]
+        },
+        "firstName": {
+            "$id": "#/properties/firstName",
+            "type": "string",
+            "title": "Describes firstname property",
+            "description": "To include the item sellers information: firstname.",
+            "default": "",
+            "examples": [
+                "matti"
+            ]
+        },
+        "lastName": {
+            "$id": "#/properties/lastName",
+            "type": "string",
+            "title": "Describes lastname property",
+            "description": "To include the item sellers information: lastname.",
+            "default": "",
+            "examples": [
+                "meikalainen"
+            ]
+        },
+        "email": {
+            "$id": "#/properties/email",
+            "type": "string",
+            "title": "Describes the email property",
+            "description": "To include the item sellers information: email.",
+            "default": "",
+            "examples": [
+                "matti.meikalainen@gmail.com"
+            ]
+        },
+        "dateOfPosting": {
+            "$id": "#/properties/dateOfPosting",
+            "type": "string",
+            "title": "Describes the date Of Posting property",
+            "description": "Tells when the post has been made",
+            "default": "",
+            "examples": [
+                "2021-10-30"
+            ]
+        },"deliverytype": {
+            "$id": "#/properties/deliverytype",
+            "type": "string",
+            "title": "Describes the delivery property",
+            "description": "Tells how the item can be delivered",
+            "default": "",
+            "examples": [
+                "pickup"
+            ]
+        }
+    },
+    "additionalProperties": true
+}
+
+
