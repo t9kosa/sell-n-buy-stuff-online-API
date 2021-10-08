@@ -1,10 +1,13 @@
 # sell-n-buy-stuff-online-API
 
-the git code is installed to work on heruko: https://sell-n-buy-used-stuff.herokuapp.com/
+This is a REST API graded Exercise for a OAMK course, Building Cloud Integration that is a part of Advanced Studies of Software Development.
 
-if you want to use it for the localhost you have to uncommet the last part in the server.js code where it says localhost:3000 
+API design in human readable format can be found in https://exercise1oamk.stoplight.io/docs/sell-n-buy-usedstuff/YXBpOjIyNTkyNDMz-selln-buy-used-stuff. 
 
-/*LOCALHOST 3000*/
+The git code is installed to work on heruko: https://sell-n-buy-used-stuff.herokuapp.com/
+
+if you want to use it for the localhost you have to uncomment the last part in the server.js code where it says localhost:3000 
+"" /*LOCALHOST 3000*/
 let serverInstance = null;
 
 module.exports = {
@@ -17,9 +20,9 @@ module.exports = {
     serverInstance.close();
   }
 }
-
-and comment the part above it 
-
+""
+- and comment the part above it 
+""
 /* TO ACTIVATE HEROKU 
 let serverInstance = null;
 
@@ -34,4 +37,4 @@ module.exports = {
   }
 }
 */
-
+""
