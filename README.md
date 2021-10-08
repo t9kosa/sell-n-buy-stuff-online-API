@@ -1,6 +1,6 @@
 # sell-n-buy-stuff-online-API
 
-This is a REST API graded Exercise for a OAMK course, Building Cloud Integration that is a part of Advanced Studies of Software Development.
+This is a REST API graded Exercise for a Building Cloud Integration course, that is a part of Advanced Studies of Software Development.
 
 API design in human readable format can be found in https://exercise1oamk.stoplight.io/docs/sell-n-buy-usedstuff/YXBpOjIyNTkyNDMz-selln-buy-used-stuff. 
 
